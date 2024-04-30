@@ -1,0 +1,16 @@
+#container-modal{
+    display: none;
+}
+table, th, td{
+    border: 1px solid;
+}
+table{
+    border-collapse: collapse;
+    width: 500px;
+}
+th{
+    align-items: center;
+}
+button{
+    align-items: center;
+}
