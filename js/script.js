@@ -1,141 +1,148 @@
-//simula um banco de dados na memória
-var alunos = []
+//simula um banco de dados em memória
+var clientes = []
+//guarda o objeto que esta sendo alterado
+var clienteAlterado = null
 
-// guarda o objeto que está sendo alterado
-var alunoAlterado = null
 
-function adicionar() {
-    //libera para digitar o ra
-    alunoAlterado = null
+function adicionar(){
+    document.getElementById("cpf").disabled = false
+    clienteAlterado = null
     mostrarModal()
     limparForm()
+    
 }
 
-function alterar(ra){
- //Procurar o aluno que tem o Ra clicado no alterar
- for(let i = 0; i < alunos.length; i++) {
-    let aluno = alunos[i]
-        if( aluno.ra == ra) {
-    //achou o aluno, então preenche o form
-    document.getElementById("ra").value = aluno.ra
-    document.getElementById("nome").value = aluno.nome
-    document.getElementById("cidade").value = aluno.cidade
-    document.getElementById("estado").value = aluno.estado
-    document.getElementById("curso").value = aluno.curso
-    alunoAlterado = aluno
-        }
+function alterar(cpf){
+    //prcurar o cliente que tem o cpf clicado no alterar
+    for(let i = 0; i < clientes.length; i++){
+    let cliente = clientes[i]
+    if (cliente.cpf == cpf){
+        //achou o cliente, então preenche o form
+        document.getElementById("nome").value = cliente.nome
+        document.getElementById("cpf").value = cliente.cpf
+        document.getElementById("telefone").value = cliente.telefone
+        document.getElementById("nomePeriquito").value = cliente.nomePeriquito
+        document.getElementById("cidadeNascimento").value = cliente.cidadeNascimento
+        clienteAlterado = cliente
+
+        // bloquear a alteração de cpf
+        document.getElementById("cpf").disabled = true 
+        mostrarModal()
     }
-    //bloquear o cpf para nao permitir alterá-lo
-    document.getElementById("ra").disabled = true
-    mostrarModal()
+    
+    }
+    mostrarModal() 
+
 }
 
-function excluir(ra){
-    if(confirm("Você deseja realmente excluir?")){
-    //excluir tudo do aluno
-    for(let i = 0; i < alunos.length; i++) { 
-        let aluno = alunos[i]
-    if (aluno.ra == ra) {
-        //remove o elemento encontrado na posição "i"
-      alunos.splice(i, 1)
+function excluir(cpf){
+    if (confirm("Você deseja realmente excluir?")){
+        for (let i =0; i< clientes.length; i++){
+        let cliente = clientes[i]
+        if (cliente.cpf = cpf){
+            clientes.splice(i,1)
+        
     }
-  }
-  exibirDados()
-}
-}
+    }
+    exibirDados()
+
+}}
 
 function mostrarModal(){
     let containerModal = document.getElementById("container-modal")
     containerModal.style.display = "flex"
+
 }
 
-function ocultarModal() {
+function ocultarModal(){
     let containerModal = document.getElementById("container-modal")
     containerModal.style.display = "none"
+
 }
 
-function cancelar() {
+function cancelar(){
     ocultarModal()
     limparForm()
 }
 
 function salvar(){
-    let ra = document.getElementById("ra").value
-    let nome = document.getElementById("nome").value
-    let cidade = document.getElementById("cidade").value
-    let estado = document.getElementById("estado").value
-    let curso = document.getElementById("curso").value
+let nome = document.getElementById("nome").value
+let cpf = document.getElementById("cpf").value
+let telefone = document.getElementById("telefone").value
+let nomePeriquito = document.getElementById("nomePeriquito").value
+let cidadeNascimento = document.getElementById("cidadeNascimento").value
 
-   //se não estiver alterando ninguém, adiciona no vetor
-    if(alunoAlterado == null) {
-    let aluno = {
-        "ra": ra,
+
+
+if(clienteAlterado == null){
+        let cliente = {
         "nome": nome,
-        "cidade": cidade,
-        "estado": estado,
-        "curso": curso
+        "cpf": cpf,
+        "telefone": telefone,
+        "nomePeriquito" : nomePeriquito,
+        "cidadeNascimento": cidadeNascimento,
     }
 
-    //adiciona o objeto aluno no vetor de alunos
-    alunos.push(aluno)
-    } else {
-    alunoAlterado.ra = ra
-    alunoAlterado.nome = nome
-    alunoAlterado.cidade = cidade
-    alunoAlterado.estado = estado
-    alunoAlterado.curso = curso
-    }
+    clientes.push(cliente)
+    } else{
+        clienteAlterado.nome = nome
+        clienteAlterado.cpf = cpf
+        clienteAlterado.telefone = telefone
+        clienteAlterado.nomePeriquito = nomePeriquito
+        clienteAlterado.cidadeNascimento = cidadeNascimento
 
-    alunoAlterado = null
+    }  
 
+    clienteAlterado = null
 
-
-    //limpar o form
+console.log(clientes)
+    //Limpar FORM
     limparForm()
+
     ocultarModal()
 
-    exibirDados()
+    
+exibirDados()
+
 }
 
-function exibirDados() {
-
+function exibirDados(){
+    
     let tbody = document.querySelector("#table-customers tbody")
 
-    //antes de listar os alunos,limpa todas as linhas
-
+    //antes de listar os clientes, limpa toda a linha
     tbody.innerHTML = ""
 
-    for(let i = 0; i < alunos.length; i++) {
-        
-        let linha = `
-            <tr>
-                <td>${alunos[i].ra}</td>
-                <td>${alunos[i].nome}</td>
-                <td>${alunos[i].cidade}</td>
-                <td>${alunos[i].estado}</td>
-                <td>${alunos[i].curso}</td>
-                <td>
-                    <button onclick="alterar('${alunos[i].ra}')">Alterar</button>
-                    <button onclick="excluir('${alunos[i].ra}')">Excluir</button>
-                </td>
-            </tr>
-        `
+    for (let i=0; i< clientes.length; i++){
+    let linha = `
+    <tr>
+            <td>${clientes[i].nome}</td>
+            <td>${clientes[i].cpf}</td>
+            <td>${clientes[i].telefone}</td>
+            <td>${clientes[i].nomePeriquito}</td>
+            <td>${clientes[i].cidadeNascimento}</td>
+            <td>
+                <button onclick="alterar('${clientes[i].cpf}')">Alterar</button>
+                <button onclick="excluir('${clientes[i].cpf}')" class= "botao-excluir">Excluir</button>
+            </td>
+        </tr>`
 
-            let tr = document.createElement("tr")
-            tr.innerHTML = linha
-    
-            tbody.appendChild(tr)
+        let tr = document.createElement("tr")
+        tr.innerHTML = linha
+
+        tbody.appendChild(tr)
     }
+
 }
 
-    function limparForm() {
-        document.getElementById("ra").value = ""
-        document.getElementById("nome").value = ""
-        document.getElementById("cidade").value = ""
-        document.getElementById("estado").value = ""
-        document.getElementById("curso").value = ""
-    }
 
-    
-        
-    
+function limparForm(){
+    document.getElementById("nome").value = ""
+    document.getElementById("cpf").value = ""
+    document.getElementById("telefone").value = ""
+    document.getElementById("nomePeriquito").value = ""
+    document.getElementById("cidadeNascimento").value = ""
+
+}
+
+
